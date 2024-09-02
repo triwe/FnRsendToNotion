@@ -1,0 +1,3 @@
+runtime: nodejs18
+service_account: custom-app-engine-sa@fnr-ofchat-ext-tristan.iam.gserviceaccount.com
+cc
