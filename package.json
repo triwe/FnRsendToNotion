@@ -1,13 +1,18 @@
 {
   "name": "fnr-chat-ext-functions",
   "version": "1.0.0",
+  "description": "Cloud Function to send feedback to Notion.",
   "main": "index.js",
+  "engines": {
+    "node": ">=14.0.0"
+  },
   "dependencies": {
     "@notionhq/client": "^2.2.15",
     "dotenv": "^16.4.5",
     "express": "^4.19.2"
   },
   "scripts": {
+    "start": "npx @google-cloud/functions-framework --target=sendToNotion",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
@@ -20,5 +25,9 @@
     "url": "https://github.com/triwe/fnr-ofchat-ext-back/issues"
   },
   "homepage": "https://github.com/triwe/fnr-ofchat-ext-back#readme",
-  "description": ""
+  "keywords": [
+    "notion",
+    "feedback",
+    "cloud-functions"
+  ]
 }
