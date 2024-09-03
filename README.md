@@ -89,7 +89,7 @@ To send data to the SendToNotion function, make an HTTP POST request with the fo
 
 ```json
 {
-  "databaseId": "notion_database_id",
+  "databaseId": "notion_database_id", // The ID of the target Notion database
   "data": {
     "title": "Feedback from user",
     "feedback": "The feedback content...",
@@ -105,7 +105,7 @@ To send data to the SendToNotion function, make an HTTP POST request with the fo
 
 ```json
 {
-  "databaseId": "notion_database_id",
+  "databaseId": "notion_database_id", // The ID of the target Notion database
   "data": {
     "title": "SUBJECT",
     "category": "Request",
