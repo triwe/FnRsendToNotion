@@ -62,6 +62,9 @@ exports.sendToNotion = async (req, res) => {
                 },
                 Tags: {
                     multi_select: data.tags.split(',').map(tag => ({ name: tag.trim() }))
+                },
+                "Member URL": { // This maps the "Member URL" field
+                    url: data.memberProfileURL
                 }
             }
         });
