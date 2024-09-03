@@ -20,8 +20,6 @@ git clone https://github.com/your-repo/send-to-notion.git
 cd send-to-notion
 ```
 
-````
-
 ### 2. Install Dependencies
 
 Ensure that you have Node.js installed, then run:
@@ -171,4 +169,3 @@ We welcome contributions! If you’d like to contribute to this project, please 
 ## License
 
 This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-````
