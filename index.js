@@ -1,8 +1,4 @@
-require('dotenv').config(); // Add this line at the top to load environment variables from .env
-console.log('NOTION_API_KEY:', process.env.NOTION_API_KEY);
-console.log('GOOGLE_API_KEY:', process.env.GOOGLE_API_KEY);
-
-// Continue with the rest of your code...
+require('dotenv').config(); // Load environment variables
 
 const { Client } = require('@notionhq/client');
 
@@ -30,43 +26,72 @@ exports.sendToNotion = async (req, res) => {
 
     // Validate the API key
     if (apiKey !== validApiKey) {
+        console.log("Invalid API Key");
         return res.status(403).send('Forbidden: Invalid API Key');
     }
 
-    const { databaseId, data } = req.body;
+    const { data } = req.body;
+    const type = data.type;
+
+    console.log("Received type:", type);
+    console.log("Received data:", data);
+
+    if (!type) {
+        console.log("Type is required but missing");
+        return res.status(400).send("Type is required.");
+    }
+
+    let pageProperties;
+
+    if (type === 'feedback') {
+        // Properties for Feedback
+        pageProperties = {
+            Title: {
+                title: [{ text: { content: data.title } }]
+            },
+            Feedback: {
+                rich_text: [{ text: { content: data.feedback } }]
+            },
+            Category: {
+                select: { name: data.category }
+            },
+            Tags: {
+                multi_select: data.tags.split(',').map(tag => ({ name: tag.trim() }))
+            },
+            "Member URL": {
+                url: data.memberProfileURL
+            }
+        };
+    } else if (type === 'request') {
+        // Properties for Request
+        pageProperties = {
+            Title: {
+                title: [{ text: { content: data.title } }]
+            },
+            "Member URL": {
+                url: data.memberProfileURL
+            },
+            "Member Request": {
+                rich_text: [{ text: { content: data.requestDetails || '' } }]
+            },
+            Budget: {
+                number: data.budget ? parseFloat(data.budget) : 0 // Budget as a number
+            },
+            "Manager Notes": {
+                rich_text: [{ text: { content: data.notes || '' } }]
+            }
+        };
+    } else {
+        console.log("Invalid type provided:", type);
+        return res.status(400).send("Invalid type provided.");
+    }
 
     try {
+        console.log("Sending data to Notion with properties:", pageProperties);
+
         const response = await notion.pages.create({
-            parent: { database_id: databaseId },
-            properties: {
-                Title: {
-                    title: [
-                        {
-                            text: {
-                                content: data.title
-                            }
-                        }
-                    ]
-                },
-                Feedback: {
-                    rich_text: [
-                        {
-                            text: {
-                                content: data.feedback
-                            }
-                        }
-                    ]
-                },
-                Category: {
-                    select: { name: data.category }
-                },
-                Tags: {
-                    multi_select: data.tags.split(',').map(tag => ({ name: tag.trim() }))
-                },
-                "Member URL": { // This maps the "Member URL" field
-                    url: data.memberProfileURL
-                }
-            }
+            parent: { database_id: req.body.databaseId },
+            properties: pageProperties
         });
         res.status(200).send(response);
     } catch (error) {
