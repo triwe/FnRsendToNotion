@@ -16,8 +16,8 @@ The `SendToNotion` Cloud Function is designed to capture user feedback and reque
 First, clone the repository to your local machine:
 
 ```bash
-git clone https://github.com/your-repo/send-to-notion.git
-cd send-to-notion
+git clone https://github.com/triwe/FnRsendToNotion.git
+cd FnRsendToNotion
 ```
 
 ### 2. Install Dependencies
